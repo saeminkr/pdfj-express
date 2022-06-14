@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@pdftron/pdfjs-express": "^6.2.1",
+    "@pdftron/pdfjs-express-viewer": "^8.4.0",
     "gh-pages": "^4.0.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
@@ -19,7 +20,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "node tools/copy-webviewer-files.js"
+    "postinstall": "node tools/copy-webviewer-files.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages master -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -29,5 +32,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "homepage": "https://saeminkr.github.io/pdfj-express"
 }

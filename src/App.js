@@ -4,39 +4,48 @@ import './App.css';
 
 const App = () => {
   const viewer = useRef(null);
-
-  // if using a class, equivalent of componentDidMount 
   useEffect(() => {
     WebViewer(
       {
         path: '/webviewer/lib',
-        initialDoc: '/files/ok_sample.pdf',
+        licenseKey: "UcbjW9fOSFoJTNCviGiK",
+        initialDoc: '/files/CO_SERVICE.pdf',
       },
       viewer.current,
     ).then((instance) => {
-      const { docViewer, Annotations } = instance;
-      const annotManager = docViewer.getAnnotationManager();
+      
+      instance.disableElements(['searchButton']);
+      instance.disableElements(['downloadButton']);
 
-      docViewer.on('documentLoaded', () => {
-        const rectangleAnnot = new Annotations.RectangleAnnotation();
-        rectangleAnnot.PageNumber = 1;
-        // values are in page coordinates with (0, 0) in the top left
-        rectangleAnnot.X = 100;
-        rectangleAnnot.Y = 150;
-        rectangleAnnot.Width = 200;
-        rectangleAnnot.Height = 50;
-        rectangleAnnot.Author = annotManager.getCurrentUser();
+      instance.enableElements(['leftPanelButton', 'downloadButton', 'fileAttachmentDownload']);
 
-        annotManager.addAnnotation(rectangleAnnot);
-        // need to draw the annotation otherwise it won't show up until the page is refreshed
-        annotManager.redrawAnnotation(rectangleAnnot);
-      });
+      const fitButton = {
+        type: 'actionButton',
+        img: 'https://www.svgrepo.com/show/55866/folded-code-page.svg',
+        onClick: () => {
+          instance.setFitMode(instance.FitMode.FitWidth);
+        },
+        dataElement: 'alertButton',
+      }
+
+      const downloadButton = {
+        type: 'actionButton',
+        img: 'https://cdn-icons-png.flaticon.com/512/60/60721.png',
+        onClick: () => {
+          instance.downloadPdf()
+        },
+      }
+
+      instance.setHeaderItems((header) => {
+        header.push(fitButton)
+        header.push(downloadButton)
+      })
     });
   }, []);
 
   return (
     <div className="App">
-      <div className="header">React sample</div>
+      <div className="header">pdfjs express test</div>
       <div className="webviewer" ref={viewer}></div>
     </div>
   );
